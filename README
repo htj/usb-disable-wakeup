@@ -1,0 +1,29 @@
+This is a script and service to prevent a logitech usb receiver from waking up
+a suspended linux system immediately. 
+
+There are other good sources for solutions:
+
+https://askubuntu.com/questions/1328823/disable-specific-device-from-waking-up-the-system/1359890#1359890
+https://github.com/bvobart/usb-wakeup-control
+https://github.com/glexposito/disable-usb-wakeup
+https://cocoacrumbs.com/blog/2024-09-28-preventing-usb-wakeup/
+
+I just wanted something dead simple, that I could understand in 1 minute.
+
+Installation:
+
+Modify the vendor / product ids in usb-disable-wakeup to your liking.
+
+$ cp usb-disable-wakeup /usr/local/bin/
+$ cp usb-disable-wakeup.service /etc/systemd/system/
+$ systemctl daemon-reload
+$ systemctl enable usb-disable-wakeup.service
+
+(You probably need to use sudo).
+
+Test with
+
+$ systemctl suspend
+
+License: MIT
+

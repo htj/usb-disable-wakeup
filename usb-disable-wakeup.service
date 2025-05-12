@@ -1,0 +1,12 @@
+[Unit]
+Description=Control wakeup of USB device before sleep so they will or not resume the computer
+Before=sleep.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/usb-disable-wakeup
+StandardOutput=journal
+
+[Install]
+WantedBy=sleep.target
+

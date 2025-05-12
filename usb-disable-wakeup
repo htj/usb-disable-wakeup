@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+### Put it here: /usr/local/bin/usb-disable-wakeup
+
+VENDOR="046d"
+PRODUCT="c547"
+STATE="disabled"
+
+DEVICES=/sys/bus/usb/devices
+
+for device in "$DEVICES"/*; do
+  if [ -f "$device/idVendor" ] && [ -f "$device/idProduct" ]; then
+    idVendor=$(<"$device/idVendor")
+    idProduct=$(<"$device/idProduct")
+    if [ -f "$device/product" ]; then
+      productName=$(cat "$device/product")
+    fi
+    WAKEUPFILE="$device/power/wakeup"
+    if [ "$idVendor" = $VENDOR ] && [ "$idProduct" = $PRODUCT ] && [ -f "$WAKEUPFILE" ]; then
+      oldState=$(<"$WAKEUPFILE")
+      echo "$STATE" > "$WAKEUPFILE"
+      newState=$(<"$WAKEUPFILE")
+      echo "Bus-port:$device vendor=$idVendor product=$idProduct name=$productName WakeUp: old=$oldState new=$newState"
+    fi
+  fi
+done
+
